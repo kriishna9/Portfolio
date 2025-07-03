@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Krishna Moni Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    * {margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif;}
+    body {background: #f0f2f5; color: #333;}
+    #loader {position: fixed; width: 100%; height: 100vh; background: white; display: flex; justify-content: center; align-items: center; z-index: 9999;}
+    .spinner {border: 6px solid #f3f3f3; border-top: 6px solid #333; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite;}
+    @keyframes spin {to { transform: rotate(360deg); }}
+    header {position: fixed; top: 0; width: 100%; display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05);}
+    nav a {color: #000; margin: 0 1rem; text-decoration: none; font-weight: 500;}
+    nav a:hover {color: #007bff;}
+    main {margin-top: 100px;}
+    section {padding: 4rem 2rem; max-width: 1000px; margin: 2rem auto; background: #fff; border-radius: 15px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease, transform 0.6s ease;}
+    section.visible {opacity: 1; transform: translateY(0);}
+    .hero {display: flex; background: #fff; border-radius: 15px; overflow: hidden;}
+    .hero .text {flex: 1; padding: 4rem 2rem; background: #111; color: #fff; display: flex; flex-direction: column; justify-content: center; gap: 1rem;}
+    .hero h1 {font-size: 2.5rem;}
+    .glass-buttons {display: flex; gap: 1rem;}
+    .glass-buttons a {background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 0.75rem 1.25rem; border-radius: 10px; text-decoration: none; backdrop-filter: blur(10px); transition: background 0.3s; display: flex; align-items: center; gap: 0.5rem;}
+    .glass-buttons a:hover {background: rgba(255, 255, 255, 0.2);}
+    .hero .image-wrapper {flex: 1; background: #000;}
+    .hero img {width: 100%; height: 100%; object-fit: cover;}
+    h2 {text-align: center; margin-bottom: 1rem; font-size: 2rem;}
+
+    .skills, .learning {display: flex; justify-content: center; flex-wrap: wrap; gap: 2rem; margin-top: 1rem;}
+    .skills .icon {position: relative;}
+    .skills img, .learning img {width: 60px; height: 60px; transition: transform 0.3s;}
+    .skills img:hover, .learning img:hover {transform: scale(1.1);}
+    .tooltip {position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #000; color: #fff; padding: 0.25rem 0.5rem; font-size: 0.8rem; border-radius: 5px; opacity: 0; pointer-events: none; transition: opacity 0.3s;}
+    .icon:hover .tooltip {opacity: 1;}
+
+    .project {display: flex; flex-wrap: wrap; gap: 2rem; align-items: center; margin-bottom: 2rem;}
+    .project img {
+      width: 45%;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); /* optional subtle glow */
+    }
+    .project:nth-child(even) {flex-direction: row-reverse;}
+    .project-content {flex: 1;}
+    .project-content h3 {margin-bottom: 0.5rem;}
+    .project-content p {margin-bottom: 1rem;}
+    .project-content a {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #888;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      text-decoration: none;
+      color: #fff;
+      transition: all 0.3s ease;
+      position: relative;
+      font-weight: 600;
+      box-shadow: 0 0 2px rgba(255, 255, 255, 0.2);
+    }
+    
+    .project-content a:hover {
+      color: #00ffe0;
+      border-color: #00ffe0;
+      box-shadow: 0 0 10px #00ffe0, 0 0 20px #00ffe0, 0 0 30px #00ffe0;
+    }
+    #projects {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      color: #fff;
+      background-color: #0e0e0e;
+    }
+    
+    #projects::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 200%;
+      height: 200%;
+      background-image: url('https://i.imgur.com/VXxgHki.png'); /* Circuit-style image */
+      background-size: cover;
+      background-repeat: repeat;
+      opacity: 0.05;
+      animation: scrollBg 40s linear infinite;
+      z-index: 0;
+    }
+    
+    @keyframes scrollBg {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-50%, -50%); }
+    }
+    
+    #projects > * {
+      position: relative;
+      z-index: 2;
+    }
+    
+
+    .contact-form {max-width: 600px; margin: 0 auto; display: flex; flex-direction: column; gap: 1rem;}
+    .contact-form input, .contact-form textarea {padding: 0.75rem; border: 1px solid #ccc; border-radius: 5px;}
+    .contact-form button {padding: 0.75rem; background: #000; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-weight: 600;}
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      background: #000;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    footer .social-icons {
+      margin-top: 1rem;
+    }
+
+    footer .social-icons a {
+      color: white;
+      margin: 0 10px;
+      font-size: 1.3rem;
+      display: inline-block;
+      transition: transform 0.3s ease, color 0.3s ease;
+    }
+
+    footer .social-icons a:hover {
+      transform: scale(1.2);
+    }
+
+    footer .social-icons .fa-facebook-f:hover {
+      color: #1877f2;
+    }
+
+    footer .social-icons .fa-instagram:hover {
+      color: #e1306c;
+    }
+
+    footer .social-icons .fa-snapchat-ghost:hover {
+      color: #fffc00;
+    }  
+  </style>
+  <script>
+    window.addEventListener('load', () => {
+      document.getElementById('loader').style.display = 'none';
+      document.querySelectorAll('section').forEach(el => el.classList.add('visible'));
+    });
+  </script>
+</head>
+<body>
+  <div id="loader"><div class="spinner"></div></div>
+
+  <header>
+    <div style="font-weight: 700;">Kriishna.in</div>
+    <nav>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="text">
+        <p>Hi, I am</p>
+        <h1>Krishna Moni Konwar</h1>
+        <p>Frontend Developer & UI Designer</p>
+        <div class="glass-buttons">
+          <a href="https://drive.google.com/file/d/1Uj6_WzUhHLwv-mMapQpTmWR2TczBVYc1/view?usp=sharing"><i class="fas fa-file-download"></i> Resume</a>
+          <a href="http://linkedin.com/in/krishna-moni-konwar-6a0925236" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        </div>
+      </div>
+      <div class="image-wrapper">
+        <img src="https://i.ibb.co/MwbNtQG/macbook.jpg" alt="Profile Picture" />
+      </div>
+    </section>
+
+    <section id="about">
+      <h2>About Me</h2>
+      <p>I’m a passionate Computer Engineering student with a knack for creative design and functional web development.</p>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills">
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg" alt="HTML5" /><div class="tooltip">HTML5</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg" alt="CSS3" /><div class="tooltip">CSS3</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JS" /><div class="tooltip">JavaScript</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" /><div class="tooltip">React</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bootstrap/bootstrap-original.svg" alt="Bootstrap" /><div class="tooltip">Bootstrap</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" /><div class="tooltip">Git</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" alt="Figma" /><div class="tooltip">Figma</div></div>
+        <div class="icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" /><div class="tooltip">Python</div></div>
+        <div class="icon">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/blender/blender-original.svg" alt="Blender" />
+          <div class="tooltip">Blender</div>
+        </div>
+        <div class="icon">
+          <img src="https://img.icons8.com/color/96/video-editing.png" alt="Video Editing" />
+          <div class="tooltip">Video Editing</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="project">
+        <img src="https://i.ibb.co/bjm58QKH/project1.jpg" alt="Hydro Project">
+        <div class="project-content">
+          <h3>Mini Hydro Electric Plant</h3>
+          <p>A working model built from scrap to demonstrate energy conversion using flowing water to power a room.</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+      <div class="project">
+        <img src="https://i.ibb.co/zTTg7VxW/project2.jpg" alt="Traffic Light">
+        <div class="project-content">
+          <h3>Traffic Light Control System</h3>
+          <p>Developed a basic traffic light system using microcontroller logic for safe intersections.</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+      <div class="project">
+        <img src="https://i.ibb.co/JjT5dT3d/project3.jpg" alt="Sneaker Website">
+        <div class="project-content">
+          <h3>Sneaker E-Commerce Website</h3>
+          <p>Modern front-end site designed to display and sell sneaker products using HTML, CSS, and JS.</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+      <div class="project">
+        <img src="https://i.ibb.co/B5dmHSpk/project4.jpg" alt="Game Dev">
+        <div class="project-content">
+          <h3>AI-Powered Game Prototype</h3>
+          <p>Built a zombie apocalypse simulation game with intelligent agent behavior using ML concepts.</p>
+          <a href="#">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <form class="contact-form">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <input type="text" placeholder="Subject" />
+        <textarea rows="5" placeholder="Message"></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Krishna Moni Konwar | All rights reserved.</p>
+    <div class="social-icons">
+      <a href="https://www.facebook.com/krishna.m.konwar.7/" target="_blank">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://www.instagram.com/kriiishna.in/" target="_blank">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="https://snapchat.com/t/0XmnksJ2" target="_blank">
+        <i class="fab fa-snapchat-ghost"></i>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
